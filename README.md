@@ -12,3 +12,13 @@ A Simple web application for uploading and sharing images, written in Python wit
 - User control panel (for moderators and superusers)
 
 ** Requires Pillow and Bootstrap libraries (check requirements.txt for the full list)
+
+
+# Screenshots:
+Guest homepage view:
+![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/fee9291c-2bf1-4b36-ae48-964381556e76)
+
+Registered users homepage view:
+![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/fee9291c-2bf1-4b36-ae48-964381556e76)
+
+
