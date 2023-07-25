@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 
 # Custom:
-from .models import Image, Album, Comment
+from .models import Image, Album, Comment, Like
 from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, UserDeleteForm, \
     ImageEditForm, CommentForm
 
@@ -100,8 +100,13 @@ class ImageDetailView(DetailView):
         context['dimensions'] = f'{image.image.width} X {image.image.height} '
         context['size'] = f'{image.image.size / 1000:.1f} kB'
         context['comments'] = Comment.objects.filter(image=image).order_by('-created_at')
+        liked = False
+        like_count = self.object.like_set.count()
         if self.request.user.is_authenticated:
             context['comment_form'] = CommentForm()
+            liked = self.object.like_set.filter(user=self.request.user).exists()
+        context['liked'] = liked
+        context['like_count'] = like_count
         return context
 
     def post(self, request, *args, **kwargs):
@@ -114,6 +119,18 @@ class ImageDetailView(DetailView):
 
         image = self.get_object()
         form = CommentForm(request.POST)
+        liked = Like.objects.filter(user=self.request.user, image=image).exists()
+        if 'action' in request.POST:
+            action = request.POST['action']
+            if action == 'like':
+                if not liked:
+                    Like.objects.create(user=self.request.user, image=image)
+            elif action == 'unlike':
+                if liked:
+                    Like.objects.filter(user=self.request.user, image=image).delete()
+            else:
+                return HttpResponseRedirect(reverse('image_details', kwargs={'pk': image.pk}))
+
 
         if form.is_valid():
             comment = form.save(commit=False)
