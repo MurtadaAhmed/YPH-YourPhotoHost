@@ -5,6 +5,7 @@ A simple web application for uploading and sharing images, written in Python wit
 **The application has the following features: 
 - User authentication 
 - Like/unlike functionality
+- Comment section
 - Categorization
 - Albums creation
 - Image resizing and deletion.
