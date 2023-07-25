@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}YPH - My Profile{% endblock %}
+{% block content %}
+<h2>Profile Details:</h2>
+<h3>Welcome {{ user.username }}</h3>
+
+<p>Email: {{ user.email }}</p>
+    <p> Total Uploaded Images: {{ uploaded_images_count}}</p>
+    <p> Total Albums: {{ albums_count}}</p>
+<a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+
+{% endblock %}

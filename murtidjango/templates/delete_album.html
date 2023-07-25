@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Delete {{ album.title }}{% endblock %}
+{% block content %}
+
+<h1>Delete Album</h1>
+<p>Are you sure you want to delete the album "{{ album.title }}"?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger" >Confirm Delete</button>
+  <a href="{% url 'album_list' %}" class="btn btn-success" type="button">Cancel</a>
+</form>
+
+{% endblock %}

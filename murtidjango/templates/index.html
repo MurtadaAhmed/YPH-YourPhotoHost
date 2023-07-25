@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block title %}YPH - Your Photo Host{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Upload Image</h2>
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+            {% bootstrap_form form %}
+
+            {% if user.is_authenticated %}
+          <div class="text-right mb-4">
+            <a href="{% url 'create_album' %}" class="btn btn-secondary btn-sm">Create Album</a>
+          </div>
+        {% endif %}
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+
+          </div>
+        </form>
+
+
+
+
+  {% if not user.is_authenticated %}
+        <div class="row mt-5 justify-content-center">
+<div class="col-md-6 text-center">
+
+            <h4>Register an Account to:</h4></div>
+           <ul>
+  <li>Upload and share your own photos with friends and the community.</li>
+  <li>Create and manage your personal photo albums to keep your memories organized.</li>
+    <li>Keep your photos private or share them publicly based on your preferences.</li>
+  <li>Keep track of your uploaded images and albums for easy access.</li>
+</ul>
+        <div class="col-md-6 text-center">
+        <a href="{% url 'register' %}" class="btn btn-success btn-success mt-4">Register an account</a>
+      </div>
+
+        </div>
+
+
+
+
+        {% endif %}
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

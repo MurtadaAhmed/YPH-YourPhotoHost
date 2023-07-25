@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Albums{% endblock %}
+{% block content %}
+    <h2>User Created Albums</h2>
+
+    {% if albums %}
+
+            {% for album in albums %}
+
+                    <a href="{% url 'admin_album_images' album.user.pk album.pk %}" class="btn btn-primary">{{ album.title }}</a>
+                    {% if request.user.is_superuser or request.user == album.user %}
+                        <a href="{% url 'delete_album' album.pk %}"  class="btn btn-danger" >Delete</a>
+                    {% endif %}
+
+                 <br>
+                 <br>
+
+            {% endfor %}
+
+    {% else %}
+        <p>No created albums found.</p>
+    {% endif %}
+{% endblock %}

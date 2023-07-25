@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}YPH - My Albums{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col">
+    <h2>My Albums</h2>
+  </div>
+  <div class="col-auto">
+    <a href="{% url 'create_album' %}" class="btn btn-secondary btn-sm">Create New Album</a>
+  </div>
+</div>
+    <br>
+
+    {% for album in albums %}
+
+    <a href="{% url 'album_images' album.pk %}" class="btn btn-primary">{{ album.title }}</a>
+    {% if user == album.user or user.is_superuser %}
+    <a href="{% url 'delete_album' album.pk %}" class="btn btn-danger" type="button" >Delete</a>
+        {% endif %}
+
+        <br>
+         <br>
+     {% empty %}
+        <p>No albums found. </p>
+
+    {% endfor %}
+
+{% endblock %}

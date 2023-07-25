@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}YPH - {{ user.username }} Details{% endblock %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">{{ user.username }}</h2>
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last Name: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Uploaded Images: {{ user.image_set.count }}</p>
+    <p>Created Albums: {{ user.album_set.count }}</p>
+</div>
+<p>
+<a href="{% url 'user_images' user.pk %}" class="btn btn-outline-primary">View Uploaded Images</a>
+<a href="{% url 'user_albums' user.pk%}" class="btn btn-outline-primary">View Created Albums</a>
+    {% if not request.user|is_moderator %}
+<a href="{% url 'user_delete' user.pk %}" class="btn btn-danger">Delete User</a>
+    {% endif %}
+</p>
+
+{% endblock %}

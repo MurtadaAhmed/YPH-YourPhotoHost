@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}YPH - {{ user.username }} - {{ album.title }}{% endblock %}
+{% block content %}
+    <h2>User: <a href="{% url 'user_detail' user.pk %}">{{ user.username }}</a> - Album: {{ album.title }}</h2>
+
+   {% if images %}
+         <div class="row">
+    {% for image in images %}
+        <div class="col-md-3">
+     {% if image.title is not None %}
+        <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
+        <h4>{{ image.title }}</h4>
+      {% else %}
+      <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="img" class="img-thumbnail"></a>
+        <h4>No title</h4>
+      {% endif %}
+        </div>
+    {% endfor %}
+         </div>
+    {% else %}
+    <p>No Images found in this album</p>
+    {% endif %}
+{% endblock %}

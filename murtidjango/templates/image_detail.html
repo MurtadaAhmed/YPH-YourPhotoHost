@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block title %}YPH - {{ image.title }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <h2 class="mb-4">Uploaded Image</h2>
+ <div class="d-flex justify-content-center">
+          <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="max-width: 140%; max-height: 50vh;">
+        </div>    {%  if image.title %}
+  <br>
+          <h5>{{ image.title }} | {{ dimensions }} | {{ size }}</h5>
+
+    {% endif %}
+      <br>
+     <a href="{{image.image.url}}" target="_blank" class="btn btn-outline-secondary" type="button" >View in full size</a>
+      {% if can_delete or user.is_superuser or is_moderator %}
+    <a href="{% url 'image_edit' image.pk %}" class="btn btn-success" type="button">Edit Image</a>
+    <a href="{% url 'delete_image' image.pk %}" class="btn btn-danger" type="button" >Delete Image</a>
+      {% endif %}
+
+<div class="form-group mt-4">
+          <label for="shareable-link">Shareable Link:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="shareable-link" value="{{ request.scheme }}://{{ request.get_host }}{{ image.image.url }}" readonly>
+              <div class="input-group-append">
+
+                <button class="btn btn-secondary" type="button" id="copy-link-button" data-clipboard-target="#shareable-link">Copy</button>
+
+              </div>
+            </div>
+          </div>
+</div>
+    </div>
+  </div>
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h3>Comments</h3>
+            {% if comments %}
+                <ul class="list-group">
+                    {% for comment in comments %}
+                        <li class="list-group-item">{{ comment.text }} - {{ comment.user.username }} at {{ comment.created_at }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endif %}
+ <br> <br>
+            {% if user.is_authenticated %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="text-right">
+                    {% bootstrap_form comment_form %}
+                    <button class="btn btn-primary mt-2" type="submit">Submit</button>
+                    </div>
+                </form>
+            {% else %}
+                <p>Please <a href="{% url 'login' %}">login</a> to add a comment.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Include the Clipboard.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Clipboard.js
+        new ClipboardJS('#copy-link-button');
+    });
+</script>
+
+{% endblock %}
+
+{% comment %}
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Uploaded Image</h2>
+  <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="width: 50%; height: auto;" >
+    {%  if image.title %}
+  <h4>{{ image.title }}</h4>
+    {% endif %}
+<div class="form-group mt-4">
+            <label for="shareable-link">Shareable Link:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="shareable-link" value="{{ request.scheme }}://{{ request.get_host }}{{ image.image.url }}" readonly>
+              <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" id="copy-link-button" data-clipboard-target="#shareable-link">Copy</button>
+              </div>
+            </div>
+          </div>
+
+
+  <!-- Include the Clipboard.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Clipboard.js
+      new ClipboardJS('#copy-link-button');
+    });
+  </script>
+
+{% endblock %}
+{% endcomment %}

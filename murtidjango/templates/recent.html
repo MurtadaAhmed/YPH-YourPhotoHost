@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}YPH - All Uploaded Images{% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <div class="btn-group" role="group">
+      <a href="{% url 'recent' %}" class="btn btn-info{% if not selected_category %} active{% endif %}">ALL CATEGORIES</a>
+      {% for category in categories %}
+          {% if category != None %}
+        <a href="{% url 'recent' %}?category={{ category }}" class="btn btn-info{% if category == selected_category %} active{% endif %}">{{ category|upper }}</a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+
+<br>
+  <div class="row">
+
+  {% if recent_images %}
+    {% for image in recent_images %}
+      {% if image.image %}
+        {% if not image.is_private and request.user != image.user %}
+          <div class="col-md-3">
+            {% if image.title %}
+              <a href="{% url 'image_details' image.pk %}">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail">
+              </a>
+              <h4>{{ image.title }}</h4>
+            {% else %}
+              <a href="{% url 'image_details' image.pk %}">
+                <img src="{{ image.image.url }}" alt="img" class="img-thumbnail">
+              </a>
+              <h4>No title</h4>
+            {% endif %}
+          </div>
+        {% elif request.user == image.user or request.user.is_superuser or request.user|is_moderator %}
+          <div class="col-md-3">
+            {% if image.title %}
+              <a href="{% url 'image_details' image.pk %}">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail">
+              </a>
+              <h4>{{ image.title }}</h4>
+            {% else %}
+              <a href="{% url 'image_details' image.pk %}">
+                <img src="{{ image.image.url }}" alt="img" class="img-thumbnail">
+              </a>
+              <h4>No title</h4>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  </div>
+
+  <div class="pagination justify-content-end">
+    <!-- Pagination code goes here -->
+  </div>
+{% endblock %}

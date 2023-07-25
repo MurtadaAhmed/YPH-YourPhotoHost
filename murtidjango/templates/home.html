@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murtada Ahmed</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+
+
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .navbar-brand i {
+            color: #61dbfb;
+            margin-right: 5px;
+        }
+        .navbar {
+            background-color: #007bff;
+        }
+        .navbar-toggler {
+            border-color: #fff;
+        }
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+        .section-title {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            color: #FFD43B;
+            margin-right: 10px;
+        }
+        .project-title h4 a {
+            color: #007bff;
+            font-size: 24px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .project-title h4 a i {
+            color: #50C878;
+            margin-right: 10px;
+        }
+        .project-title h4 a:hover {
+            text-decoration: underline;
+        }
+        .project-description p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'main_page' %}">
+            <i class="fas fa-laptop-code"></i> murti.website
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="section-title"><i class="fas fa-user"></i> Murtada Ahmed</h1>
+            <h3 class="section-title"><i class="fas fa-code"></i> Junior Python Web Developer</h3>
+            <p>As a motivated and adaptable Python web developer, I have gained practical experience and proficiency
+                in working with Django, a powerful web framework in Python, as well as utilizing PostgreSQL for efficient
+                database management. I am passionate about crafting high-quality and scalable web applications.</p>
+            <ul class="list-unstyled personal-info">
+                <li><i class="fas fa-envelope"></i> <strong>Email:</strong> murtadhabg&lt;at&gt;gmail&lt;dot&gt;com</li>
+                <li><i class="fas fa-phone"></i> <strong>Phone:</strong> &lt;redacted&gt;</li>
+                <li><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Plovdiv, Bulgaria</li>
+                <li><i class="fab fa-github"></i> <strong>Github:</strong> <a href="https://github.com/MurtadaAhmed" class="text-decoration-none">github.com/MurtadaAhmed</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <div class="section-title">
+                <h2><i class="fas fa-tasks"></i> Personal Projects</h2>
+            </div>
+            <div class="project-title">
+                <h4><a href="{% url 'home' %}" class="text-decoration-none"><i class="fas fa-image"></i> YPH (Your Photo Host)</a>
+                </h4>
+            </div>
+            <div class="project-description">
+                <p>Simple web application for uploading and sharing images, written in Python with Django and PostgreSQL database.
+                    The application has the following features: user authentication, user admin control panel, categorization, albums creation, image editing and deletion.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

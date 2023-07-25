@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Images{% endblock %}
+{% block content %}
+    <h2>
+    Uploaded Images
+    </h2>
+    {% if images %}
+        <div class="row">
+        {% for image in images %}
+        <div class="col-md-3">
+     {% if image.title is not None %}
+        <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
+        <h4>{{ image.title }}</h4>
+      {% else %}
+      <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="img" class="img-thumbnail"></a>
+        <h4>No title</h4>
+      {% endif %}
+        </div>
+    {% endfor %}
+ </div>
+
+ {% if images.has_previous or images.has_next %}
+            <nav aria-label="Image Pagination">
+                <ul class="pagination justify-content-center">
+                    {% if images.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ images.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% if images.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ images.next_page_number }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <p>No uploaded images found.</p>
+    {% endif %}
+
+
+{% endblock %}
+

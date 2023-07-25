@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load bootstrap5 %}
+{% block title %}YPH - Users list {{ album.title }}{% endblock %}
+{% block content %}
+<div class="col-md-6">
+  <form method="GET">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-9">
+        {% bootstrap_form form %}
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary ">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+    <br>
+<h3 class="mb-4">Users:</h3>
+
+    {% for user in users %}
+        <a href="{% url 'user_detail' user.pk %}" class="btn btn-outline-secondary" type="button">{{ user.username }}</a>
+        {% if not request.user|is_moderator %}
+        <a href="{% url 'user_delete' user.pk %}" class="btn btn-danger" type="button" >Delete {{ user.username }}</a>
+        {% endif %}
+        <br>
+        <br>
+    {% empty %}
+        <p>No users found</p>
+
+    {% endfor %}
+{% endblock %}

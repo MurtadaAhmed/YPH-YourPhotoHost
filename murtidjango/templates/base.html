@@ -1,0 +1,52 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+</head>
+<body>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+
+    <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-image"></i> YPH - Your Photo Host</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+      {%  if request.user.is_staff  %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'main_page' %}admin">Admin Panel</a></li>
+      {% endif %}
+      {% if user.is_superuser or request.user|is_moderator or request.user.is_staff %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'users_list' %}">User Admin</a></li>
+      {% endif %}
+        {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'profile_details' %}">My Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'my_images' %}">My Images</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}">My Albums</a></li>
+
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'recent' %}">All Uploaded Images</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  {% comment %}<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>{% endcomment %}
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

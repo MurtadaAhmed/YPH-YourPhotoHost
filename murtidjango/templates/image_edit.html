@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block title %}YPH - Edit {{ image.title }}{% endblock %}
+{% block content %}
+<h2>Edit Image</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+
+
+    <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+</form>
+
+{% endblock %}

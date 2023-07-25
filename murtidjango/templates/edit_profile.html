@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Edit your profile{% endblock %}
+{% load bootstrap5 %}
+
+{% block content %}
+<form method="Post">
+{% csrf_token %}
+{%  bootstrap_form form %}
+<button type="submit" class="btn btn-primary btn-lg">Save</button>
+</form>
+{% endblock %}
