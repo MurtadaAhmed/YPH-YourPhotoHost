@@ -1,5 +1,5 @@
 # YPH-YourPhotoHost
-A Simple web application for uploading and sharing images, written in Python with Django ,PostgreSQL database and basic bootstrap for styling. 
+A simple web application for uploading and sharing images, written in Python with Django ,PostgreSQL database and basic bootstrap for styling. 
 
 
 **The application has the following features: 
