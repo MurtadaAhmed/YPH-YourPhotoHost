@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 
 # Custom:
-from .models import Image, Album, Comment, Like
+from .models import Image, Album, Comment, Like, Favorite
 from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, UserDeleteForm, \
     ImageEditForm, CommentForm
 
@@ -101,11 +101,14 @@ class ImageDetailView(DetailView):
         context['size'] = f'{image.image.size / 1000:.1f} kB'
         context['comments'] = Comment.objects.filter(image=image).order_by('-created_at')
         liked = False
+        favorite = False
         like_count = self.object.like_set.count()
         if self.request.user.is_authenticated:
             context['comment_form'] = CommentForm()
             liked = self.object.like_set.filter(user=self.request.user).exists()
+            favorite = self.object.favorite_set.filter(user=self.request.user).exists()
         context['liked'] = liked
+        context['favorite'] = favorite
         context['like_count'] = like_count
         return context
 
@@ -120,6 +123,7 @@ class ImageDetailView(DetailView):
         image = self.get_object()
         form = CommentForm(request.POST)
         liked = Like.objects.filter(user=self.request.user, image=image).exists()
+        favorite = Favorite.objects.filter(user=self.request.user, image=image).exists()
         if 'action' in request.POST:
             action = request.POST['action']
             if action == 'like':
@@ -128,9 +132,14 @@ class ImageDetailView(DetailView):
             elif action == 'unlike':
                 if liked:
                     Like.objects.filter(user=self.request.user, image=image).delete()
+            elif action == 'favorite':
+                if not favorite:
+                    Favorite.objects.create(user=self.request.user, image=image)
+            elif action == 'unfavorite':
+                if favorite:
+                    Favorite.objects.filter(user=self.request.user, image=image).delete()
             else:
                 return HttpResponseRedirect(reverse('image_details', kwargs={'pk': image.pk}))
-
 
         if form.is_valid():
             comment = form.save(commit=False)
@@ -511,3 +520,20 @@ class UserDeleteViewAdmin(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         images.delete()
 
         return super().delete(request, *args, **kwargs)
+
+
+class MyFavoriteView(LoginRequiredMixin, ListView):
+    template_name = 'my_favorites.html'
+    model = Image
+    context_object_name = 'favorite_images'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Image.objects.filter(favorite__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = set(Image.objects.filter(favorite__user=self.request.user).values_list('category', flat=True))
+        context['categories'] = [category for category in categories if category]
+        context['selected_category'] = self.request.GET.get('category')
+        return context

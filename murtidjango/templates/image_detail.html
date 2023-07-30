@@ -10,15 +10,46 @@
           <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="max-width: 140%; max-height: 50vh;">
         </div>    {%  if image.title %}
   <br>
-          <h5>{{ image.title }} | {{ dimensions }} | {{ size }}</h5>
+          <h5>{{ image.title }} | {{ dimensions }} | {{ size }} | {{ like_count }} likes</h5>
 
     {% endif %}
       <br>
-     <a href="{{image.image.url}}" target="_blank" class="btn btn-outline-secondary" type="button" >View in full size</a>
-      {% if can_delete or user.is_superuser or is_moderator %}
-    <a href="{% url 'image_edit' image.pk %}" class="btn btn-success" type="button">Edit Image</a>
-    <a href="{% url 'delete_image' image.pk %}" class="btn btn-danger" type="button" >Delete Image</a>
-      {% endif %}
+  <div class="d-flex justify-content-center align-items-center">
+    <a href="{{image.image.url}}" target="_blank" class="btn btn-outline-secondary mr-2" type="button">View in full size</a>
+    {% if can_delete or user.is_superuser or is_moderator %}
+        <a href="{% url 'image_edit' image.pk %}" class="btn btn-success mr-2" type="button">Edit Image</a>
+        <a href="{% url 'delete_image' image.pk %}" class="btn btn-danger mr-2" type="button">Delete Image</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            {% if liked %}
+                <button type="submit" name="action" value="unlike" class="btn btn-outline-danger mr-2">Unlike</button>
+            {% else %}
+                <button type="submit" name="action" value="like" class="btn btn-outline-primary mr-2">Like</button>
+            {% endif %}
+        </form>
+
+        <form method="POST">
+    {% csrf_token %}
+    {% if favorite %}
+                <button type="submit" name="action" value="unfavorite" class="btn btn-danger" title="Unfavorite">
+                     <i class="fas fa-star"></i>
+                </button>
+            {% else %}
+                <button type="submit" name="action" value="favorite" class="btn btn-primary" title="Favorite">
+                    <i class="far fa-star"></i> <!-- Font Awesome heart outline icon -->
+                </button>
+            {% endif %}
+</form>
+
+
+    {% endif %}
+</div>
+
+
+
+
 
 <div class="form-group mt-4">
           <label for="shareable-link">Shareable Link:</label>
@@ -34,6 +65,12 @@
 </div>
     </div>
   </div>
+
+
+
+
+
+
 
 
 <div class="container mt-5">

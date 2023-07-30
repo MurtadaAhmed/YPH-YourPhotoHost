@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}YPH - My Favorites{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+    <div class="col">
+        <h2>My Favorites</h2>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center">
+            <div class="btn-group" role="group">
+                <a href="{% url 'my_favorites' %}" class="btn btn-info{% if not selected_category %} active{% endif %}">ALL CATEGORIES</a>
+                {% for category in categories %}
+                <a href="{% url 'my_favorites' %}?category={{ category }}" class="btn btn-info{% if category == selected_category %} active{% endif %}">{{ category|upper }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+{% if favorite_images %}
+<div class="row">
+    {% for image in favorite_images %}
+    <div class="col-md-3">
+        <a href="{% url 'image_details' image.pk %}">
+            <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail">
+        </a>
+        <h4>{{ image.title }}</h4>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<br>
+No favorite images found.
+{% endif %}
+{% endblock %}

@@ -7,7 +7,7 @@ from django.contrib.auth.views import LogoutView as UserLogoutView
 from .views import HomeView, RecentUploadedView, UserLoginView, UserRegistrationView, AlbumListView, AlbumCreateView, \
     AlbumImageView, ImageDetailView, AlbumDeleteView, ImageDeleteView, ProfileDetailsView, EditProfileView, \
     MyPhotosView, ImageEditView, UserListViewAdmin, UserDetailViewAdmin, UserDeleteViewAdmin, UserImageViewAdmin, \
-    UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView
+    UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView, MyFavoriteView
 
 urlpatterns = [
     path('', TempMainView.as_view(), name='main_page'),
@@ -26,7 +26,7 @@ urlpatterns = [
     path('profile/edit/', EditProfileView.as_view(), name='edit_profile'),
     path('images/', MyPhotosView.as_view(), name='my_images'),
     path('image/<int:pk>/edit/', ImageEditView.as_view(), name='image_edit'),
-
+    path('my_favorites/', MyFavoriteView.as_view(), name='my_favorites'),
     # superusers/moderators urls:
     path('users', UserListViewAdmin.as_view(), name='users_list'),
     path('users/<int:pk>/', UserDetailViewAdmin.as_view(), name='user_detail'),
