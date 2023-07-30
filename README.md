@@ -78,26 +78,27 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 Special thanks to [Software University](https://softuni.bg/) team and their amazing teachers.
 
 ## Screenshots:
+
 **Guests homepage view:**
 
-![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9dbb721a-2e6a-47a2-a3ae-52108b4afda7)
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9dbb721a-2e6a-47a2-a3ae-52108b4afda7" alt="Guests homepage view" width="500">
 
 ***************************
 
 **Authenticated users homepage view:**
 
-![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/be12269f-6963-41e8-ab16-926d67e9ffac)
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/be12269f-6963-41e8-ab16-926d67e9ffac" alt="Authenticated users homepage view" width="500">
 
 ***************************
 
 **Image view:**
 
-![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/c4fca0cf-7800-490e-bc94-37c556a285b6)
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/c4fca0cf-7800-490e-bc94-37c556a285b6" alt="Image view" width="500">
 
 ***************************
 
 **All Uploaded Images view:**
 
-![image](https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/16948dd1-ef0b-484b-8b90-d801d8e7ec96)
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/16948dd1-ef0b-484b-8b90-d801d8e7ec96" alt="All Uploaded Images view" width="500">
 
 ***************************
