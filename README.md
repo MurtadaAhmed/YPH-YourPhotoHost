@@ -16,6 +16,7 @@ YourPhotoHost (YPH) is a web application that allows users to upload, view, and 
 
   
 ## Installation
+
 To set up the YourPhotoHost application locally, follow these steps:
 
 1. Clone the repository:
@@ -49,8 +50,10 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-
 YourPhotoHost should now be accessible at `http://localhost:8000/`.
+
+**Important:** make sure to change the database and the email server settings in settings.py
+
 
 ## Usage
 1. Navigate to the application URL and sign up for a new account or log in if you already have one.
