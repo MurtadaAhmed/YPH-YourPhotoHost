@@ -102,6 +102,6 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 
 **All Uploaded Images view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/16948dd1-ef0b-484b-8b90-d801d8e7ec96" alt="All Uploaded Images view" width="500">
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/2054a497-2f85-40c2-9b97-0a2d5dbd035f" alt="All Uploaded Images view" width="500"> 
 
 ***************************
