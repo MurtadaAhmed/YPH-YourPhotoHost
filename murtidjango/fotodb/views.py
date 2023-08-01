@@ -442,12 +442,12 @@ class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
     view the uploaded images for the specific user.
     accessible by superusers and moderators only.
-    has a pagination to show 20 images per page.
+
     """
     template_name = 'user_images.html'
     model = Image
     context_object_name = 'images'
-    paginate_by = 20
+    paginate_by = 12
 
     def test_func(self):
         return self.request.user.is_superuser or moderators_check(self.request.user)
@@ -457,6 +457,13 @@ class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
         user = get_object_or_404(User, pk=username)
         return Image.objects.filter(user=user)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = Paginator(context['images'], self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['images'] = page_obj
+        return context
 
 class UserAlbumViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
