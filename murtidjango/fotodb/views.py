@@ -34,6 +34,8 @@ class TempMainView(TemplateView):
     template_name = 'home.html'
 
 
+
+
 class HomeView(CreateView):
     """
     project home page view:
@@ -328,6 +330,11 @@ class MyPhotosView(LoginRequiredMixin, ListView):
         categories = set(Image.objects.filter(user=self.request.user).values_list('category', flat=True))
         context['categories'] = [category for category in categories if category]
         context['selected_category'] = self.request.GET.get('category')
+
+        paginator = Paginator(context['photos'], self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['photos'] = page_obj
         return context
 
 
