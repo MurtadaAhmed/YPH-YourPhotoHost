@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-%3E%3D3.6-blue.svg)](https://www.python.org/downloads/)
 
 ## Overview
-YourPhotoHost (YPH) is a web application that allows users to upload, view, and manage their images online. Users can create an account, upload images, and organize them into different categories. They can also like and favorite images, as well as leave comments on images uploaded by others.
+YourPhotoHost (YPH) is a web application that allows users to upload, view, and manage their images online. Users can create an account, upload images, and organize them into different categories. They can also like, favorite and report images, as well as leave comments on images uploaded by others.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -72,6 +72,7 @@ YourPhotoHost should now be accessible at `http://localhost:8000/`.
 - Like and favorite functionality
 - Favorite or unfavorite functionality
 - Commenting on images
+- Report Images
 - Moderators with special privileges for image moderation
 
 ## License
@@ -103,5 +104,11 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 **All Uploaded Images view:**
 
 <img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/2054a497-2f85-40c2-9b97-0a2d5dbd035f" alt="All Uploaded Images view" width="500"> 
+
+***************************
+
+**Reported Images view:**
+
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9d85b14e-e2e8-46df-8793-3f4e060930f2" alt="All Uploaded Images view" width="500">
 
 ***************************
