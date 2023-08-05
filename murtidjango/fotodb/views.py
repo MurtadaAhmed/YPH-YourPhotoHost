@@ -424,24 +424,20 @@ class UserListViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return context
 
 
-class UserDetailViewAdmin(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class UserDetailViewAdmin(LoginRequiredMixin, DetailView):
     """
     show the user details (from 'User Admin' link).
     show the firstname, lastname, email, username, uploaded images & albums count and links to view them.
-    delete user button is visible to superusers only.
+
     """
     model = User
     template_name = 'user_details.html'
     context_object_name = 'user'
 
-    def test_func(self):
-        return self.request.user.is_superuser or moderators_check(self.request.user)
 
-
-class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class UserImageViewAdmin(LoginRequiredMixin, ListView):
     """
     view the uploaded images for the specific user.
-    accessible by superusers and moderators only.
 
     """
     template_name = 'user_images.html'
@@ -449,8 +445,6 @@ class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     context_object_name = 'images'
     paginate_by = 12
 
-    def test_func(self):
-        return self.request.user.is_superuser or moderators_check(self.request.user)
 
     def get_queryset(self):
         username = self.kwargs['pk']
@@ -466,19 +460,14 @@ class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return context
 
 
-class UserAlbumViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class UserAlbumViewAdmin(LoginRequiredMixin, ListView):
     """
     view the albums for the specific user.
-    accessible by superusers and moderators only.
-    has a pagination to show 20 albums per page.
     """
     template_name = 'user_albums.html'
     model = Album
     context_object_name = 'albums'
-    paginate_by = 20
 
-    def test_func(self):
-        return self.request.user.is_superuser or moderators_check(self.request.user)
 
     def get_queryset(self):
         username = self.kwargs['pk']
@@ -486,16 +475,12 @@ class UserAlbumViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return Album.objects.filter(user=user)
 
 
-class UserAlbumImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+class UserAlbumImageViewAdmin(LoginRequiredMixin, TemplateView):
     """
     view the uploaded photo for the album for the specific user.
-    accessible by superusers and moderators only.
     show the username of the album creator and the album name when accessed.
     """
     template_name = "album_images_admin.html"
-
-    def test_func(self):
-        return self.request.user.is_superuser or moderators_check(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

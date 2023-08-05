@@ -14,7 +14,7 @@
 <p>
 <a href="{% url 'user_images' user.pk %}" class="btn btn-outline-primary">View Uploaded Images</a>
 <a href="{% url 'user_albums' user.pk%}" class="btn btn-outline-primary">View Created Albums</a>
-    {% if not request.user|is_moderator %}
+    {% if request.user.is_superuser  %}
 <a href="{% url 'user_delete' user.pk %}" class="btn btn-danger">Delete User</a>
     {% endif %}
 </p>

@@ -8,11 +8,16 @@
         <h2 class="mb-4">Uploaded Image</h2>
  <div class="d-flex justify-content-center">
           <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="max-width: 140%; max-height: 50vh;">
-        </div>    {%  if image.title %}
+        </div>
   <br>
-          <h5>{{ image.title }} | {{ dimensions }} | {{ size }} | {{ like_count }} likes</h5>
-
+          <h5>{{ image.title }} by
+              {% if image.user.pk %}
+<a href="{% url 'user_detail' image.user.pk  %}" style="text-decoration:none">{{ image.user.username }}</a>
+                  {% else %}
+                  Guest
     {% endif %}
+              | {{ dimensions }} | {{ size }} | {{ like_count }} likes</h5>
+
       <br>
   <div class="d-flex justify-content-center align-items-center">
     <a href="{{image.image.url}}" target="_blank" class="btn btn-outline-secondary mr-2" type="button">View in full size</a>
