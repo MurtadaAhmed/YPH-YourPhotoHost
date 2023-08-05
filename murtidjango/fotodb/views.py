@@ -230,6 +230,8 @@ class AlbumListView(LoginRequiredMixin, ListView):
         return Album.objects.filter(user=self.request.user)
 
 
+
+
 class AlbumCreateView(LoginRequiredMixin, CreateView):
     template_name = 'create_album.html'
     form_class = AlbumForm
@@ -295,8 +297,11 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
         context = {
             "user": self.request.user,
             'albums_count': self.request.user.album_set.count(),
-            'uploaded_images_count': self.request.user.image_set.count()
+            'uploaded_images_count': self.request.user.image_set.count(),
+            'favorites_count': Favorite.objects.filter(user=self.request.user).count(),
         }
+
+
 
         return context
 

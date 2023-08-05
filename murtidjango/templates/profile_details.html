@@ -8,6 +8,6 @@
     <p> Total Uploaded Images: {{ uploaded_images_count}}</p>
     <p> Total Albums: {{ albums_count}}</p>
 <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-    <a href="{% url 'my_favorites' %}" class="btn btn-primary">My Favorites</a>
+    <a href="{% url 'my_favorites' %}" class="btn btn-primary">My Favorites ({{ favorites_count }})</a>
 
 {% endblock %}
