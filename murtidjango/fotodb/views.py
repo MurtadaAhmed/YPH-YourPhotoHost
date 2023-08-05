@@ -6,18 +6,19 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.text import slugify
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
+from django.contrib import messages
 
 # Custom:
-from .models import Image, Album, Comment, Like, Favorite
+from .models import Image, Album, Comment, Like, Favorite, Report
 from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, UserDeleteForm, \
-    ImageEditForm, CommentForm
+    ImageEditForm, CommentForm, ReportForm
 
 
 def moderators_check(user):
@@ -32,8 +33,6 @@ def moderators_check(user):
 class TempMainView(TemplateView):
     # website home page view
     template_name = 'home.html'
-
-
 
 
 class HomeView(CreateView):
@@ -421,6 +420,7 @@ class UserListViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = UserSearchForm(self.request.GET)
+        context['reports_count'] = Report.objects.all().count()
         return context
 
 
@@ -464,6 +464,7 @@ class UserImageViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
         page_obj = paginator.get_page(page_number)
         context['images'] = page_obj
         return context
+
 
 class UserAlbumViewAdmin(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
@@ -551,3 +552,48 @@ class MyFavoriteView(LoginRequiredMixin, ListView):
         context['categories'] = [category for category in categories if category]
         context['selected_category'] = self.request.GET.get('category')
         return context
+
+
+class ReportImageView(LoginRequiredMixin, CreateView):
+    template_name = "report_image.html"
+    form_class = ReportForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['image'] = get_object_or_404(Image, pk=self.kwargs['pk'])
+        return context
+
+    def form_valid(self, form):
+        image = get_object_or_404(Image, pk=self.kwargs['pk'])
+        existing_report = Report.objects.filter(image=image).exists()
+        if not existing_report:
+            report = form.save(commit=False)
+            report.image = image
+            report.reporter = self.request.user
+            report.save()
+        return redirect('recent')
+
+
+class ReportedImagesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = 'reported_images.html'
+    model = Report
+    context_object_name = 'reports'
+
+    def test_func(self):
+        return self.request.user.is_superuser or moderators_check(self.request.user)
+
+    def post(self, request, pk):
+        report = get_object_or_404(Report, pk=pk)
+
+        if 'delete' in request.POST:
+
+            report.image.delete()
+            report.delete()
+        elif 'cancel' in request.POST:
+
+            report.delete()
+
+
+        return redirect('reported_images')
+
+

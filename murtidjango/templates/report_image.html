@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}YPH - Report Image{% endblock %}
+
+{% block content %}
+
+    <h2>Report Image</h2>
+
+<div class="d-flex justify-content-between">
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-success">Submit Report</button>
+        <a href="{% url 'image_details' image.pk %}" class="btn btn-outline-secondary">Back to the image</a>
+    </form>
+
+</div>
+
+{% endblock %}

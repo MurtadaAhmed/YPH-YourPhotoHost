@@ -14,10 +14,18 @@
         <button type="submit" class="btn btn-primary ">Search</button>
       </div>
     </div>
-  </form>
-</div>
 
+  </form>
+
+</div>
+<div class="text-right">
+    <a href="{% url 'reported_images' %}" class="btn btn-primary">Reported Images ({{ reports_count }})</a>
+  </div>
     <br>
+
+
+
+
 <h3 class="mb-4">Users:</h3>
 
     {% for user in users %}
@@ -31,4 +39,7 @@
         <p>No users found</p>
 
     {% endfor %}
+
+
+
 {% endblock %}

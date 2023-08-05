@@ -7,7 +7,7 @@ from django.contrib.auth.views import LogoutView as UserLogoutView
 from .views import HomeView, RecentUploadedView, UserLoginView, UserRegistrationView, AlbumListView, AlbumCreateView, \
     AlbumImageView, ImageDetailView, AlbumDeleteView, ImageDeleteView, ProfileDetailsView, EditProfileView, \
     MyPhotosView, ImageEditView, UserListViewAdmin, UserDetailViewAdmin, UserDeleteViewAdmin, UserImageViewAdmin, \
-    UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView, MyFavoriteView
+    UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView, MyFavoriteView, ReportImageView, ReportedImagesView
 
 urlpatterns = [
     path('', TempMainView.as_view(), name='main_page'),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('images/', MyPhotosView.as_view(), name='my_images'),
     path('image/<int:pk>/edit/', ImageEditView.as_view(), name='image_edit'),
     path('my_favorites/', MyFavoriteView.as_view(), name='my_favorites'),
+    path('image/<int:pk>/report', ReportImageView.as_view(), name='report_image'),
     # superusers/moderators urls:
     path('users', UserListViewAdmin.as_view(), name='users_list'),
     path('users/<int:pk>/', UserDetailViewAdmin.as_view(), name='user_detail'),
@@ -34,5 +35,8 @@ urlpatterns = [
     path('users/<int:pk>/albums/', UserAlbumViewAdmin.as_view(), name='user_albums'),
     path('users/<int:pk>/delete/', UserDeleteViewAdmin.as_view(), name='user_delete'),
     path('users/<int:pk>/albums/<int:album_pk>/images/', UserAlbumImageViewAdmin.as_view(), name='admin_album_images'),
+    path('reported/', ReportedImagesView.as_view(), name='reported_images'),
+    path('reported/<int:pk>/delete/', ReportedImagesView.as_view(), name='delete_report'),
+    path('reported/<int:pk>/cancel/', ReportedImagesView.as_view(), name='cancel_report'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

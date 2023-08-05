@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # custom
-from .models import Image, Album, Comment
+from .models import Image, Album, Comment, Report
 
 
 class ImageForm(forms.ModelForm):
@@ -122,3 +122,10 @@ class CommentForm(forms.ModelForm):
         fields = ['text']
         widgets = {'text': forms.Textarea(attrs={'rows': 2, 'cols': 5})}
         labels = {'text': False}
+
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason']
+
