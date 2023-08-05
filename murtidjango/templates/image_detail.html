@@ -88,19 +88,35 @@
             {% if comments %}
                 <ul class="list-group">
                     {% for comment in comments %}
-                        <li class="list-group-item">{{ comment.text }} - {{ comment.user.username }} at {{ comment.created_at }}</li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="comment-text">{{ comment.text }}</div>
+                            <div class="comment-actions">
+                                <div class="d-flex align-items-center">
+                                    <a href="{% url 'user_detail' comment.user.pk %}" style="text-decoration:none">{{ comment.user.username }}</a>
+                                    <span class="ml-2">at {{ comment.created_at }}</span>
+                                    {% if can_delete or is_superuser or is_moderator or comment.user == request.user %}
+                                        <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-warning btn-sm ml-2" title="Delete Comment">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 <p>No comments yet.</p>
             {% endif %}
- <br> <br>
+            <br> <br>
             {% if user.is_authenticated %}
                 <form method="POST">
                     {% csrf_token %}
                     <div class="text-right">
-                    {% bootstrap_form comment_form %}
-                    <button class="btn btn-primary mt-2" type="submit">Submit</button>
+                        {% bootstrap_form comment_form %}
+                        <button class="btn btn-primary mt-2" type="submit">Submit</button>
                     </div>
                 </form>
             {% else %}
@@ -109,6 +125,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Include the Clipboard.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
@@ -121,36 +139,3 @@
 </script>
 
 {% endblock %}
-
-{% comment %}
-{% extends 'base.html' %}
-
-{% block content %}
-  <h2>Uploaded Image</h2>
-  <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="width: 50%; height: auto;" >
-    {%  if image.title %}
-  <h4>{{ image.title }}</h4>
-    {% endif %}
-<div class="form-group mt-4">
-            <label for="shareable-link">Shareable Link:</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="shareable-link" value="{{ request.scheme }}://{{ request.get_host }}{{ image.image.url }}" readonly>
-              <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" id="copy-link-button" data-clipboard-target="#shareable-link">Copy</button>
-              </div>
-            </div>
-          </div>
-
-
-  <!-- Include the Clipboard.js library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize Clipboard.js
-      new ClipboardJS('#copy-link-button');
-    });
-  </script>
-
-{% endblock %}
-{% endcomment %}

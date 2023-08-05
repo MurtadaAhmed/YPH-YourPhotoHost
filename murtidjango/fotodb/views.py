@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.text import slugify
+from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
@@ -98,6 +99,7 @@ class ImageDetailView(DetailView):
         else:
             context['can_delete'] = False
         context['is_moderator'] = is_moderator
+        context['is_superuser'] = self.request.user.is_superuser
         context['dimensions'] = f'{image.image.width} X {image.image.height} '
         context['size'] = f'{image.image.size / 1000:.1f} kB'
         context['comments'] = Comment.objects.filter(image=image).order_by('-created_at')
@@ -150,6 +152,14 @@ class ImageDetailView(DetailView):
             return HttpResponseRedirect(reverse('image_details', kwargs={'pk': image.pk}))
 
         return self.get(request, *args, **kwargs)
+
+
+class DeleteCommentView(View):
+    def post(self, request, pk, *args, **kwargs):
+        comment = get_object_or_404(Comment, pk=pk)
+        if self.request.user == comment.image.user or self.request.user == comment.user or self.request.user.is_superuser or moderators_check(self.request.user):
+            comment.delete()
+        return redirect('image_details', pk=comment.image.pk)
 
 
 class ImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -445,7 +455,6 @@ class UserImageViewAdmin(LoginRequiredMixin, ListView):
     context_object_name = 'images'
     paginate_by = 12
 
-
     def get_queryset(self):
         username = self.kwargs['pk']
         user = get_object_or_404(User, pk=username)
@@ -467,7 +476,6 @@ class UserAlbumViewAdmin(LoginRequiredMixin, ListView):
     template_name = 'user_albums.html'
     model = Album
     context_object_name = 'albums'
-
 
     def get_queryset(self):
         username = self.kwargs['pk']
@@ -578,7 +586,4 @@ class ReportedImagesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
             report.delete()
 
-
         return redirect('reported_images')
-
-
