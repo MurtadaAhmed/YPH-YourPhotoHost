@@ -8,30 +8,61 @@ from django.core.exceptions import ValidationError
 from .models import Image, Album, Comment, Report
 
 
+from django import forms
+from .models import Image
+
 class ImageForm(forms.ModelForm):
-    """
-    image uploading form.
-    it has a validation for the image size not to exceed 15 MB.
-    """
     MAX_FILE_SIZE = 15 * 1024 * 1024
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['is_private'].label = "Private"
+        self.fields['image'].label = False
+        self.fields['url'].label = False
+        self.fields['title'].label = False
+
+
+        self.fields['image'].widget.attrs['placeholder'] = "Upload an image"
+        self.fields['url'].widget.attrs['placeholder'] = "Enter image URL (if not uploading from your computer)"
+        self.fields['title'].widget.attrs['placeholder'] = "Title (optional)"
+
+
+    url = forms.URLField(required=False, label="Image URL")
 
     class Meta:
         model = Image
-        fields = ['title', 'image', 'is_private', 'album', 'category']
+        fields = ['image', 'url', 'title','is_private', 'album', 'category']
         widgets = {
             'is_private': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        image = cleaned_data.get('image')
+        url = cleaned_data.get('url')
+
+        if not image and not url:
+            raise forms.ValidationError("You must upload an image or provide an image URL.")
+
+        if image and url:
+            raise forms.ValidationError("You can only use either image upload or URL, not both.")
+
+        return cleaned_data
+
     def clean_image(self):
         image = self.cleaned_data.get('image')
+        url = self.cleaned_data.get('url')
+
+        if image and url:
+            raise forms.ValidationError("You can only use either image upload or URL, not both.")
+
         if image:
             if image.size > self.MAX_FILE_SIZE:
-                raise ValidationError(f'File size cannot exceed {self.MAX_FILE_SIZE / 2048} MB!')
+                raise forms.ValidationError(f'File size cannot exceed {self.MAX_FILE_SIZE / 1024 / 1024} MB!')
+
         return image
+
+
 
 
 class ImageEditForm(forms.ModelForm):

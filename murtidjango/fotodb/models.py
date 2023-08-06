@@ -30,7 +30,7 @@ class Image(models.Model):
     )
 
     title = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     album = models.ForeignKey(Album, on_delete=models.CASCADE, blank=True, null=True)

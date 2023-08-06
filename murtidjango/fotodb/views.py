@@ -1,5 +1,7 @@
 # Built-in
 import os
+from urllib.parse import urlparse
+
 from PIL import Image as PILImage
 from django.conf import settings
 from django.contrib.auth import login
@@ -7,18 +9,21 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
+from django.shortcuts import redirect
+from urllib.request import urlopen, HTTPError
+from django.core.files import File
 
 # Custom:
 from .models import Image, Album, Comment, Like, Favorite, Report
-from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, UserDeleteForm, \
+from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, \
     ImageEditForm, CommentForm, ReportForm
 
 
@@ -35,13 +40,15 @@ class TempMainView(TemplateView):
     template_name = 'home.html'
 
 
+
+
+
 class HomeView(CreateView):
     """
-    View for the project's home page where users can upload images.
-    This view provides functionality for users to upload images with dynamic options based on user authentication.
-    If the user is authenticated, they can choose to upload private images and associate them with their albums.
-    For guests, only the category selection is available. Uploaded images are processed, and if no title is provided,
-    the image title is automatically generated from the file name.
+    View for uploading images with dynamic options based on user authentication.
+    Users can upload images from their computer or provide an image URL.
+    Authenticated users have additional options to specify privacy settings and associate images with albums.
+    Uploaded images are processed, and if no title is provided, the image title is generated from the file name.
     """
     template_name = 'index.html'
     form_class = ImageForm
@@ -51,6 +58,7 @@ class HomeView(CreateView):
         Retrieves the image upload form with dynamic options based on user authentication.
         """
         form = super().get_form(form_class)
+
         # If the user is not logged in, remove private and album options
         if not self.request.user.is_authenticated:
             form.fields.pop('is_private')
@@ -67,15 +75,49 @@ class HomeView(CreateView):
         """
         Processes the submitted form and saves the uploaded image.
         If no title is provided, the image title is generated from the image file name.
+        Handles image upload from both computer and URL.
         """
+
         image = form.save(commit=False)
-        if not image.title:
-            file_name = os.path.splitext(self.request.FILES['image'].name)[0]
-            slug = slugify(file_name)
-            image.title = slug
-        if self.request.user.is_authenticated:
-            image.user = self.request.user
-        image.save()
+
+        if form.cleaned_data.get('url'):
+            url = form.cleaned_data.get('url')
+            try:
+                response = urlopen(url)
+                # Extract the file name from the URL
+                parsed_url = urlparse(url)
+                file_name = os.path.basename(parsed_url.path)
+
+                # Associate the uploaded image with the logged-in user
+                if self.request.user.is_authenticated:
+                    image.user = self.request.user
+
+                # Save the image from URL
+                image.image.save(
+                    file_name,
+                    File(response),
+                    save=True
+                )
+
+                # Generate title from the file name if not provided
+                if not image.title:
+                    image.title = os.path.splitext(file_name)[0]
+            except HTTPError as e:
+                # Display error message if URL fetch fails
+                form.add_error(None, f"Failed to fetch image from URL: {e}")
+                return self.form_invalid(form)
+        else:
+            # Handle image upload from computer
+            # Generate title from the file name if not provided
+            if not image.title:
+                file_name = os.path.splitext(self.request.FILES['image'].name)[0]
+                slug = slugify(file_name)
+                image.title = slug
+
+            # Associate the uploaded image with the logged-in user
+            if self.request.user.is_authenticated:
+                image.user = self.request.user
+            image.save()
 
         return super().form_valid(form)
 
@@ -324,7 +366,6 @@ class AlbumImageView(LoginRequiredMixin, TemplateView):
     template_name = 'album_images.html'
 
     def get_context_data(self, **kwargs):
-
         # Retrieve album information based on the provided album_id and user authentication
         album_id = self.kwargs['album_id']
         album = get_object_or_404(Album, id=album_id, user=self.request.user)
@@ -655,7 +696,7 @@ class UserDeleteViewAdmin(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         Handles the deletion process of the user account, associated images, and albums.
         """
-        user = self.get_object()   # Get the user object to be deleted.
+        user = self.get_object()  # Get the user object to be deleted.
         albums = Album.objects.filter(user=user)  # Retrieve albums associated with the user.
         images = Image.objects.filter(user=user)  # Retrieve images associated with the user.
 
