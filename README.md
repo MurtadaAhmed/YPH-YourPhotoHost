@@ -23,6 +23,7 @@ To set up the YourPhotoHost application locally, follow these steps:
 ```
 git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
 cd YPH-YourPhotoHost
+cd murtidjango
 ```
 
 2. Create a virtual environment and activate it (optional but recommended):
@@ -69,7 +70,7 @@ YourPhotoHost should now be accessible at `http://localhost:8000/`.
 - Image upload and management (resize/rename/private or public/delete)
 - Categorization of images
 - Albums creation
-- Like and favorite functionality
+- Like or unlike functionality
 - Favorite or unfavorite functionality
 - Commenting on images
 - Report Images
