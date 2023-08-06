@@ -67,7 +67,8 @@ YourPhotoHost should now be accessible at `http://localhost:8000/`.
 
 ## Features
 - User authentication and account management
-- Image upload and management (resize/rename/private or public/delete)
+- Image upload from computer or from URL.
+- Managing uploaded images (resize/rename/private or public/delete)
 - Categorization of images
 - Albums creation
 - Like or unlike functionality
