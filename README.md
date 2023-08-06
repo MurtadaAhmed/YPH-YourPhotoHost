@@ -119,3 +119,9 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 <img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/caa4e01a-7f6d-4c97-99bf-aae2ba4d32cd" width="500">  
 
 ***************************
+
+**Profile view:**
+
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9d15b51c-416f-466a-b9aa-c016d7b498ac" width="500">   
+
+***************************
