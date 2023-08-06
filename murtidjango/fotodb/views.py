@@ -757,9 +757,12 @@ class ReportImageView(LoginRequiredMixin, CreateView):
         existing_report = Report.objects.filter(image=image).exists()
         if not existing_report:
             report = form.save(commit=False)
+            image.is_private = True
+            image.save()
             report.image = image
             report.reporter = self.request.user
             report.save()
+
         return redirect('recent')
 
 
@@ -787,6 +790,8 @@ class ReportedImagesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
             report.delete()
         elif 'cancel' in request.POST:
             # Delete the report without taking any action on the image
+            report.image.is_private = False
+            report.image.save()
             report.delete()
 
         return redirect('reported_images')
