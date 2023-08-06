@@ -86,13 +86,13 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 
 **Guests homepage view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9dbb721a-2e6a-47a2-a3ae-52108b4afda7" alt="Guests homepage view" width="500">
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/19e60106-fa6e-4361-b7b8-7da7ed44da61" alt="Guests homepage view" width="500"> 
 
 ***************************
 
 **Authenticated users homepage view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/be12269f-6963-41e8-ab16-926d67e9ffac" alt="Authenticated users homepage view" width="500">
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/a3029f9d-91a8-44ff-aa7b-54641cda151c" alt="Authenticated users homepage view" width="500"> 
 
 ***************************
 
