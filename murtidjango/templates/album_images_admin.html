@@ -1,20 +1,48 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% block title %}YPH - {{ user.username }} - {{ album.title }}{% endblock %}
 {% block content %}
+    <style>
+  .thumbnail-wrapper {
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .thumbnail-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .title-wrapper {
+    text-align: center;
+  }
+</style>
+
     <h2>User: <a href="{% url 'user_detail' user.pk %}">{{ user.username }}</a> - Album: {{ album.title }}</h2>
 
    {% if images %}
          <div class="row">
     {% for image in images %}
+             {% if not image.is_private and request.user != image.user %}
         <div class="col-md-3">
-     {% if image.title is not None %}
+        <div class="thumbnail-wrapper">
         <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
-        <h4>{{ image.title }}</h4>
-      {% else %}
-      <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="img" class="img-thumbnail"></a>
-        <h4>No title</h4>
-      {% endif %}
         </div>
+         <div class="title-wrapper">
+            <h4>{{ image.title }}</h4>
+        </div>
+        </div>
+        {% elif request.user == image.user or request.user.is_superuser or request.user|is_moderator %}
+        <div class="col-md-3">
+        <div class="thumbnail-wrapper">
+        <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
+         </div>
+            <div class="title-wrapper">
+            <h4>{{ image.title }}</h4>
+            </div>
+        </div>
+        {% endif %}
     {% endfor %}
          </div>
     {% else %}

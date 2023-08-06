@@ -4,6 +4,22 @@
 
 
 {% block content %}
+<style>
+  .thumbnail-wrapper {
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .thumbnail-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .title-wrapper {
+    text-align: center;
+  }
+</style>
 
     <div class="row">
     <div class="col">
@@ -17,10 +33,14 @@
 <div class="row">
     {% for image in favorite_images %}
     <div class="col-md-3">
+    <div class="thumbnail-wrapper">
         <a href="{% url 'image_details' image.pk %}">
             <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail">
         </a>
+        </div>
+         <div class="title-wrapper">
         <h4>{{ image.title }}</h4>
+         </div>
     </div>
     {% endfor %}
 </div>

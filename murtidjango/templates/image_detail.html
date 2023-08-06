@@ -2,9 +2,11 @@
 {% load bootstrap5 %}
 {% block title %}YPH - {{ image.title }}{% endblock %}
 {% block content %}
+{% if can_view %}
 <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6 text-center">
+
         <h2 class="mb-4">Uploaded Image</h2>
  <div class="d-flex justify-content-center">
           <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail" style="max-width: 140%; max-height: 50vh;">
@@ -70,7 +72,8 @@
               </div>
             </div>
           </div>
-</div>
+
+      </div>
     </div>
   </div>
 
@@ -136,5 +139,9 @@
         new ClipboardJS('#copy-link-button');
     });
 </script>
+
+     {% else %}
+          <h2 style="text-align: center">This image is private</h2>
+{% endif %}
 
 {% endblock %}

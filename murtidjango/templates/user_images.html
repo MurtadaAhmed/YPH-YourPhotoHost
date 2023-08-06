@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% block title %}YPH - Images{% endblock %}
 {% block content %}
     <style>
@@ -24,19 +25,31 @@
     {% if images %}
         <div class="row">
         {% for image in images %}
+            {% if not image.is_private and request.user != image.user %}
         <div class="col-md-3">
         <div class="thumbnail-wrapper">
-     {% if image.title is not None %}
+
         <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
         </div>
          <div class="title-wrapper">
          <h4>{{ image.title }}</h4>
          </div>
-      {% else %}
-      <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="img" class="img-thumbnail"></a>
-        <h4>No title</h4>
-      {% endif %}
+
+
         </div>
+            {% elif request.user == image.user or request.user.is_superuser or request.user|is_moderator %}
+            <div class="col-md-3">
+        <div class="thumbnail-wrapper">
+
+        <a href="{% url 'image_details' image.pk %}"><img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-thumbnail"></a>
+        </div>
+         <div class="title-wrapper">
+         <h4>{{ image.title }}</h4>
+         </div>
+
+
+        </div>
+            {% endif %}
     {% endfor %}
  </div>
 

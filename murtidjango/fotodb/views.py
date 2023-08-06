@@ -14,7 +14,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
-from django.contrib import messages
 
 # Custom:
 from .models import Image, Album, Comment, Like, Favorite, Report
@@ -94,6 +93,20 @@ class ImageDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         is_moderator = moderators_check(self.request.user)
         image = self.get_object()
+
+        if image.is_private:
+            if not self.request.user.is_authenticated:
+                context['can_view'] = False
+
+            elif not (self.request.user == image.user or self.request.user.is_superuser or moderators_check(
+                    self.request.user)):
+                context['can_view'] = False
+
+            else:
+                context['can_view'] = True
+        else:
+            context['can_view'] = True
+
         if self.request.user == image.user:
             context['can_delete'] = True
         else:
@@ -337,6 +350,7 @@ class MyPhotosView(LoginRequiredMixin, ListView):
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category=category)
+        queryset = queryset.order_by('-uploaded_at')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -463,7 +477,7 @@ class UserImageViewAdmin(LoginRequiredMixin, ListView):
     def get_queryset(self):
         username = self.kwargs['pk']
         user = get_object_or_404(User, pk=username)
-        return Image.objects.filter(user=user)
+        return Image.objects.filter(user=user).order_by('-uploaded_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -501,7 +515,7 @@ class UserAlbumImageViewAdmin(LoginRequiredMixin, TemplateView):
         album_id = self.kwargs['album_pk']
         user = get_object_or_404(User, id=user_id)
         album = get_object_or_404(Album, id=album_id, user=user)
-        images = album.image_set.all()
+        images = album.image_set.all().order_by('-uploaded_at')
         context['user'] = user
         context['album'] = album
         context['images'] = images
