@@ -3,13 +3,14 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from multiupload.fields import MultiFileField
 
 # custom
 from .models import Image, Album, Comment, Report
 
-
 from django import forms
 from .models import Image
+
 
 class ImageForm(forms.ModelForm):
     MAX_FILE_SIZE = 15 * 1024 * 1024
@@ -21,17 +22,15 @@ class ImageForm(forms.ModelForm):
         self.fields['url'].label = False
         self.fields['title'].label = False
 
-
         self.fields['image'].widget.attrs['placeholder'] = "Upload an image"
         self.fields['url'].widget.attrs['placeholder'] = "Enter image URL (if not uploading from your computer)"
         self.fields['title'].widget.attrs['placeholder'] = "Title (optional)"
-
 
     url = forms.URLField(required=False, label="Image URL")
 
     class Meta:
         model = Image
-        fields = ['image', 'url', 'title','is_private', 'album', 'category']
+        fields = ['image', 'url', 'title', 'is_private', 'album', 'category']
         widgets = {
             'is_private': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
@@ -61,6 +60,32 @@ class ImageForm(forms.ModelForm):
                 raise forms.ValidationError(f'File size cannot exceed {self.MAX_FILE_SIZE / 1024 / 1024} MB!')
 
         return image
+
+
+class MultipleImageForm(forms.Form):
+    MAX_FILE_SIZE = 15 * 10000 * 10000
+
+    images = MultiFileField(min_num=1, max_num=10, max_file_size=MAX_FILE_SIZE)
+    is_private = forms.BooleanField(required=False, label='Private')
+    album = forms.ModelChoiceField(queryset=Album.objects.none(), required=False, label='Album')
+    category = forms.ChoiceField(choices=Image.CATEGORY_CHOICES, required=False, label='Category')
+
+    def __init__(self, user=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        if self.user and self.user.is_authenticated:
+            self.fields['album'].queryset = Album.objects.filter(user=self.user)
+            self.fields['is_private'].widget = forms.CheckboxInput(attrs={'class': 'form-check-input'})
+        else:
+            self.fields.pop('is_private')
+            self.fields.pop('album')
+
+
+
+
+
+
+
 
 
 
@@ -96,6 +121,7 @@ class UserRegistrationForm(UserCreationForm):
     register form showing username, email, password and password confirmation.
     labels are removed and replaced with placeholders for all the field.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = False
@@ -159,4 +185,3 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ['reason']
-

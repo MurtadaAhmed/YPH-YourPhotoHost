@@ -9,10 +9,10 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils.text import slugify
 from django.views import View
-from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
@@ -24,7 +24,7 @@ from django.core.files import File
 # Custom:
 from .models import Image, Album, Comment, Like, Favorite, Report
 from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, \
-    ImageEditForm, CommentForm, ReportForm
+    ImageEditForm, CommentForm, ReportForm, MultipleImageForm
 
 
 def moderators_check(user):
@@ -123,6 +123,54 @@ class HomeView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('image_details', kwargs={'pk': self.object.pk})
+
+
+class MultipleImageView(FormView):
+    template_name = 'multiple.html'
+    form_class = MultipleImageForm
+    success_url = '/successfully_uploaded'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(user=request.user)
+        return render(request, self.template_name, {'form': form})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        images = form.cleaned_data['images']
+        uploaded_image_pks = []
+
+        for image in images:
+            album = form.cleaned_data.get('album')
+            is_private = form.cleaned_data.get('is_private', False)
+            new_image = Image(
+                image=image,
+                title=os.path.splitext(image.name)[0],
+                user=self.request.user if self.request.user.is_authenticated else None,
+                is_private=is_private,
+                album=album,
+                category=form.cleaned_data['category']
+            )
+
+            new_image.save()
+            uploaded_image_pks.append(new_image.pk)
+
+        self.request.session['uploaded_images'] = uploaded_image_pks
+        return super().form_valid(form)
+
+
+
+class SuccessfullyUploadedView(TemplateView):
+    template_name = 'successfully_uploaded.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        uploaded_image_pks = self.request.session.get('uploaded_images', [])
+        context['uploaded_images'] = Image.objects.filter(pk__in=uploaded_image_pks)
+        return context
 
 
 class ImageDetailView(DetailView):

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'fotodb',
     'bootstrap5',
     'django_extensions',
+    'multiupload',
 
 ]
 
