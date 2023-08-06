@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 {% block title %}YPH - {{ image.title }}{% endblock %}
+
 {% block content %}
 {% if can_view %}
 <div class="container">
@@ -14,7 +15,8 @@
   <br>
           <h5>{{ image.title }} by
               {% if image.user.pk %}
-<a href="{% url 'user_detail' image.user.pk  %}" style="text-decoration:none">{{ image.user.username }}</a>
+<a href="{% url 'user_detail' image.user.pk  %}" style="text-decoration:none"><i class="fa fa-user" aria-hidden="true"></i>
+{{ image.user.username }}</a>
                   {% else %}
                   Guest
     {% endif %}
@@ -23,6 +25,7 @@
       <br>
   <div class="d-flex justify-content-center align-items-center">
     <a href="{{image.image.url}}" target="_blank" class="btn btn-outline-secondary mr-2" type="button">View in full size</a>
+  <a href="{{ image.image.url }}" download="{{ image.title }}" class="btn btn-outline-secondary mr-2" type="button"><i class="fa fa-download" aria-hidden="true" title="Download"></i></a>
     {% if can_delete or user.is_superuser or is_moderator %}
         <a href="{% url 'image_edit' image.pk %}" class="btn btn-success mr-2" type="button">Edit Image</a>
         <a href="{% url 'delete_image' image.pk %}" class="btn btn-danger mr-2" type="button">Delete Image</a>
@@ -95,7 +98,7 @@
                             <div class="comment-text">{{ comment.text }}</div>
                             <div class="comment-actions">
                                 <div class="d-flex align-items-center">
-                                    <a href="{% url 'user_detail' comment.user.pk %}" style="text-decoration:none">{{ comment.user.username }}</a>
+                                    <a href="{% url 'user_detail' comment.user.pk %}" style="text-decoration:none"><i class="fa fa-user" aria-hidden="true"></i> {{ comment.user.username }}</a>
                                     <span class="ml-2">at {{ comment.created_at }}</span>
                                     {% if can_delete or is_superuser or is_moderator or comment.user == request.user %}
                                         <form method="POST" action="{% url 'delete_comment' comment.pk %}">
