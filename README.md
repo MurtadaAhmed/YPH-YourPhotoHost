@@ -70,7 +70,7 @@ YourPhotoHost should now be accessible at `http://localhost:8000/`.
 - Image upload and management (resize/rename/private or public/delete)
 - Categorization of images
 - Albums creation
-- Like and favorite functionality
+- Like or unlike functionality
 - Favorite or unfavorite functionality
 - Commenting on images
 - Report Images
