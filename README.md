@@ -23,6 +23,7 @@ To set up the YourPhotoHost application locally, follow these steps:
 ```
 git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
 cd YPH-YourPhotoHost
+cd murtidjango
 ```
 
 2. Create a virtual environment and activate it (optional but recommended):
