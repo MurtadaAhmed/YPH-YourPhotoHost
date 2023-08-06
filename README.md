@@ -68,6 +68,7 @@ YourPhotoHost should now be accessible at `http://localhost:8000/`.
 ## Features
 - User authentication and account management
 - Image upload from computer or from URL.
+- Sinlge/Multiple images upload
 - Managing uploaded images (resize/rename/private or public/delete)
 - Categorization of images
 - Albums creation
@@ -87,13 +88,13 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 
 **Guests homepage view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/19e60106-fa6e-4361-b7b8-7da7ed44da61" alt="Guests homepage view" width="500"> 
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/893fc06c-7466-476e-9fea-8f13a3543e6d" alt="Guests homepage view" width="500">  
 
 ***************************
 
 **Authenticated users homepage view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/a3029f9d-91a8-44ff-aa7b-54641cda151c" alt="Authenticated users homepage view" width="500"> 
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/d1503fe0-c425-4ef2-b880-fa8822786b40" alt="Authenticated users homepage view" width="500"> 
 
 ***************************
 
