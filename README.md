@@ -97,7 +97,7 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 
 **Image view:**
 
-<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/c4fca0cf-7800-490e-bc94-37c556a285b6" alt="Image view" width="500">
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/c1443a57-c112-4e12-a4b5-2114a955ce34" alt="Image view" width="500">
 
 ***************************
 
@@ -110,5 +110,11 @@ Special thanks to [Software University](https://softuni.bg/) team and their amaz
 **Reported Images view:**
 
 <img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9d85b14e-e2e8-46df-8793-3f4e060930f2" alt="All Uploaded Images view" width="500">
+
+***************************
+
+**Comment view:**
+
+<img src="https://github.com/MurtadaAhmed/YPH-YourPhotoHost/assets/108568451/9de65023-4bac-42a6-aaf0-8f4781c2f7f3" alt="All Uploaded Images view" width="500"> 
 
 ***************************
