@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Contact Form Submission Successful{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="alert alert-success mt-4" role="alert">
+                Thank you for contacting us! Your message has been successfully submitted. We'll get back to you soon.
+
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+<a href="{% url 'home' %}" class="btn btn-primary btn-lg">Go back to Home</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

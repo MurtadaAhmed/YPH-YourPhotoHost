@@ -5,13 +5,16 @@ from urllib.parse import urlparse
 from PIL import Image as PILImage
 from django.conf import settings
 from django.contrib.auth import login
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.views import View
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
@@ -24,7 +27,7 @@ from django.core.files import File
 # Custom:
 from .models import Image, Album, Comment, Like, Favorite, Report
 from .forms import ImageForm, UserRegistrationForm, UserLoginForm, AlbumForm, UserSearchForm, \
-    ImageEditForm, CommentForm, ReportForm, MultipleImageForm
+    ImageEditForm, CommentForm, ReportForm, MultipleImageForm, ContactForm
 
 
 def moderators_check(user):
@@ -38,9 +41,6 @@ def moderators_check(user):
 class TempMainView(TemplateView):
     # website home page view
     template_name = 'home.html'
-
-
-
 
 
 class HomeView(CreateView):
@@ -160,7 +160,6 @@ class MultipleImageView(FormView):
 
         self.request.session['uploaded_images'] = uploaded_image_pks
         return super().form_valid(form)
-
 
 
 class SuccessfullyUploadedView(TemplateView):
@@ -843,3 +842,40 @@ class ReportedImagesView(LoginRequiredMixin, UserPassesTestMixin, ListView):
             report.delete()
 
         return redirect('reported_images')
+
+
+class ContactView(View):
+    template_name = 'contact_form.html'
+
+    def get(self, request, *args, **kwargs):
+        form = ContactForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            subject = f'Contact Us Form from {name}'
+            message = f'Name: {name}\nEmail: {email}\nMessage: {message}'
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL])
+
+            user_subject = 'Thank you for contacting us!'
+            user_message = 'Thank you for contacting us. We have received your message and will get back to you soon.'
+            send_mail(user_subject, user_message, settings.DEFAULT_FROM_EMAIL, [email])
+
+            return HttpResponseRedirect(reverse('contact_success'))
+
+        return render(request, self.template_name, {'form': form})
+
+
+class ContactSuccessView(TemplateView):
+    template_name = 'contact_success.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.render_to_response({})
+
+    def post(self, request, *args, **kwargs):
+        return self.render_to_response({})

@@ -8,7 +8,7 @@ from .views import HomeView, RecentUploadedView, UserLoginView, UserRegistration
     AlbumImageView, ImageDetailView, AlbumDeleteView, ImageDeleteView, ProfileDetailsView, EditProfileView, \
     MyPhotosView, ImageEditView, UserListViewAdmin, UserDetailViewAdmin, UserDeleteViewAdmin, UserImageViewAdmin, \
     UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView, MyFavoriteView, ReportImageView, ReportedImagesView, \
-    DeleteCommentView, MultipleImageView, SuccessfullyUploadedView
+    DeleteCommentView, MultipleImageView, SuccessfullyUploadedView, ContactView, ContactSuccessView
 
 urlpatterns = [
     path('', TempMainView.as_view(), name='main_page'),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('comment/<int:pk>/delete', DeleteCommentView.as_view(), name='delete_comment'),
     path('multiple/', MultipleImageView.as_view(), name='multiple_image_upload'),
     path('successfully_uploaded/', SuccessfullyUploadedView.as_view(), name='successfully_uploaded'),
+    path('contact/', ContactView.as_view(), name='contact_us'),
+    path('contact/success/', ContactSuccessView.as_view(), name='contact_success'),
     # superusers/moderators urls:
     path('users', UserListViewAdmin.as_view(), name='users_list'),
     path('users/<int:pk>/', UserDetailViewAdmin.as_view(), name='user_detail'),
