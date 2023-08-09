@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}YPH - Page not found{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <h1 class="display-4">Oops! Page not found</h1>
+            <p class="lead">The page you are looking for might have been removed or is temporarily unavailable.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Go back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
