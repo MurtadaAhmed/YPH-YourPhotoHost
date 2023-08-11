@@ -4,7 +4,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import transaction
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 
 from .forms import ImageForm, MultipleImageForm
 from .models import Album, Image, Comment, Like, Favorite, Report
@@ -160,3 +161,71 @@ class FormTests(TestCase):
             form.clean()
 
         self.assertIn("You must upload an image or provide an image URL.", str(ve.exception))
+
+
+class ViewsTests(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.album = Album.objects.create(title='testalbum', user=self.user)
+
+    def test_fields_visibile_to_guest(self):
+        response = self.client.get(reverse('home'))
+        form = response.context['form']
+
+        self.assertTrue('title' in form.fields)
+        self.assertTrue('image' in form.fields)
+        self.assertFalse('is_private' in form.fields)
+        self.assertFalse('album' in form.fields)
+        self.assertTrue('category' in form.fields)
+
+    def test_fields_visible_to_user(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('home'))
+        form = response.context['form']
+
+        self.assertTrue('title' in form.fields)
+        self.assertTrue('image' in form.fields)
+        self.assertTrue('is_private' in form.fields)
+        self.assertTrue('album' in form.fields)
+        self.assertTrue('category' in form.fields)
+
+        self.assertEqual(form.fields['album'].queryset.count(), 1)
+
+    def test_form_valid_image_upload_from_computer_return_true(self):
+        image_path = os.path.join(os.path.dirname(__file__), 'test.jpeg')
+
+        with open(image_path, 'rb') as f:
+            image = f.read()
+            image_file = SimpleUploadedFile('test.jpeg', image, content_type='image/jpeg')
+
+        form_data = {
+            'title': 'testimage',
+            'image': image_file,
+            'category': 'animal',
+        }
+
+        response = self.client.post(reverse('home'), form_data)
+        print(response.content)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Image.objects.count(), 1)
+        image = Image.objects.first()
+        self.assertEqual(image.title, 'testimage')
+        self.assertEqual(image.category, 'animal')
+
+    def test_form_valid_image_upload_from_computer_without_title_takes_file_name(self):
+        image_path = os.path.join(os.path.dirname(__file__), 'test.jpeg')
+
+        with open(image_path, 'rb') as f:
+            image = f.read()
+            image_file = SimpleUploadedFile('test.jpeg', image, content_type='image/jpeg')
+
+        form_data = {
+            'title': '',
+            'image': image_file,
+            'category': 'animal',
+        }
+
+        response = self.client.post(reverse('home'), form_data)
+        image = Image.objects.first()
+        self.assertEqual(image.title, 'test')
