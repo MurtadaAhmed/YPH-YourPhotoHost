@@ -11,25 +11,9 @@
     {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
-<style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
 
-    .container {
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    main {
-        flex: 1;
-    }
-</style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-image"></i> YPH - Your Photo Host</a>
     <div class="collapse navbar-collapse">
@@ -55,7 +39,7 @@
     </div>
   </nav>
 
-  <div class="container py-4">
+  <div class="container py-4 flex-grow-1">
     {% block content %}
     {% endblock %}
   </div>
