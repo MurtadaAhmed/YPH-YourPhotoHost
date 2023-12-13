@@ -74,37 +74,54 @@ https://www.iis.net/downloads/microsoft/httpplatformhandler
 6. From the Server Manager > Tools > IIS Manager > Choose your server > Under 'Management' section select: Feature Delegation > Handler Mappings > Select Read/Write (from the right side)
 
 7. From the Server Manager > Tools > IIS Manager > Choose your server > Sites > Add website:
+
 Site name: mywebsite.com
+
 Physical path: c:/projectfolder/
+
 Binding: select the local ip address
+
 Ok
 
 9. From the Server Manager > Tools > IIS Manager > Choose your server > Sites > mywebsite.com > Under 'Management' select 'Configuration Editor' > from the 'Section' drop down menu select system.webServer >> httpPlatform:
+
 arguments: C:\projectfolder\manage.py runserver %HTTP_PLATFORM_PORT%
+
 environmentVariables: click on the (...) > Add:
+
   name: SERVER_PORT
   value: %HTTP_PLATFORM_PORT%
+  
 processPath: path where “python.exe” is. For example: C:\Python312\python.exe
+
 stdoutLogEnabled: True
+
 stdoutLogFile: the path where to store the log file. For example: C:\projectfolder\logs\logs.log
 
 After entering these information, click on 'Apply' on the upper right side.
 
 10. From the Server Manager > Tools > IIS Manager > Choose your server > Sites > mywebsite.com > Under 'Management' select 'Configuration Editor' > from the 'Section' drop down menu select 'appSettings' > click on the (...):
+    
 Add: 
   key: PYTHONPATH
   value: C:\projectfolder
+  
 Add:
   key: WSGI_HANDLER
   value: django.core.wsgi.get_wsgi_application()
+  
 Add:
   key: DJANGO_SETTINGS_MODULE
   value: murtidjango.settings (for example if the project folder that has the settins.py is called "murtidjango" in C:\projectfolder\murtidjango)
+  
 After entering these information and closing this window, click on 'Apply' on the upper right side on the previous window.
 
-11. From the Server Manager > Tools > IIS Manager > Choose your server > Sites > mywebsite.com > Under 'ISS' section select 'Handler Mappings' > Add Module Mapping (from the right side):
+12. From the Server Manager > Tools > IIS Manager > Choose your server > Sites > mywebsite.com > Under 'ISS' section select 'Handler Mappings' > Add Module Mapping (from the right side):
+    
     Request path: *
+    
     Module: httpPlatformHandler
+    
     Name: MyPyHandler
 
     Then click on “Request Restrictions” > untick the option “Invoked handler only if requests is mapped to” > OK > OK
