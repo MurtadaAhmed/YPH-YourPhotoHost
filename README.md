@@ -149,7 +149,7 @@ To confirm that the correct settings are applied, check the web.config file here
 </configuration>
 ```
     
-**Important:** make sure to change the database and the email server settings in settings.py
+**Important:** make sure to change the database information (host, database name, username, password then: python manage.py makemigrations & python manage.py migrate & python manage.py createsuperuser) and the email server settings in settings.py
 
 
 ## Usage
