@@ -28,7 +28,12 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'profile_details' %}"><i class="fas fa-user"></i> My Profile</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'my_images' %}"><i class="fas fa-images"></i> My Images</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}"><i class="fa fa-book" aria-hidden="true"></i> My Albums</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="nav-link btn btn-link"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+        </li>
         {% else %}
         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Register</a></li>
