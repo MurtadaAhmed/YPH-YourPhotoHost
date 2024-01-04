@@ -4,11 +4,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView as UserLogoutView
 # custom
-from .views import HomeView, RecentUploadedView, UserLoginView, UserRegistrationView, AlbumListView, AlbumCreateView, \
-    AlbumImageView, ImageDetailView, AlbumDeleteView, ImageDeleteView, ProfileDetailsView, EditProfileView, \
-    MyPhotosView, ImageEditView, UserListViewAdmin, UserDetailViewAdmin, UserDeleteViewAdmin, UserImageViewAdmin, \
-    UserAlbumViewAdmin, UserAlbumImageViewAdmin, TempMainView, MyFavoriteView, ReportImageView, ReportedImagesView, \
-    DeleteCommentView, MultipleImageView, SuccessfullyUploadedView, ContactView, ContactSuccessView
+from .views.auth_views import *
+from .views.contact_us_views import *
+from .views.moderator_users_views import *
+from .views.albums_views import *
+from .views.images_views import *
+from .views.img_upload_views import *
+from .views.multi_img_upload_views import *
+from .views.profile_views import *
+from .views.reports_views import *
+from .views.main_page_views import *
 
 urlpatterns = [
     path('', TempMainView.as_view(), name='main_page'),
