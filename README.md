@@ -28,6 +28,11 @@ default username: admin
 
 default password: password
 
+The setup will create a file "run.sh". To re-run the server again after stopping it:
+```
+./run.sh
+```
+
 **Manual Installation:**
 
 A. To set up the YourPhotoHost application locally, follow these steps:
