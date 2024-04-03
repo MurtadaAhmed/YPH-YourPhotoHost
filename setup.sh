@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Clone the repository
-git clone -b update https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
-
-# Change directory to the cloned repository
-cd YPH-YourPhotoHost
-
 # Update the system packages
 sudo apt update
 
