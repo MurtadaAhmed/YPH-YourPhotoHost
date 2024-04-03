@@ -16,14 +16,22 @@ YourPhotoHost (YPH) is a web application that allows users to upload, view, and 
 
   
 ## Installation
+**Automatic deployment on linux server using setup.sh:**
+```
+sudo -s
+git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
+cd YPH-YourPhotoHost
+chmod +x setup.sh
+./setup.sh
+```
 
+**Manual Installation:**
 A. To set up the YourPhotoHost application locally, follow these steps:
 
 1. Clone the repository:
 ```
 git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
 cd YPH-YourPhotoHost
-cd murtidjango
 ```
 
 2. Create a virtual environment and activate it (optional but recommended):
