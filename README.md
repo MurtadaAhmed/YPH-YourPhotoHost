@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.6-blue.svg)](https://www.python.org/downloads/)
 
-## Overview
+## Overview 
 YourPhotoHost (YPH) is a web application that allows users to upload, view, and manage their images online. Users can create an account, upload images, and organize them into different categories. They can also like, favorite and report images, as well as leave comments on images uploaded by others.
 
 ## Table of Contents
@@ -150,6 +150,43 @@ To confirm that the correct settings are applied, check the web.config file here
 ```
     
 **Important:** make sure to change the database information (host, database name, username, password then: python manage.py makemigrations & python manage.py migrate & python manage.py createsuperuser) and the email server settings in settings.py
+
+C. To deploy the app on Linux server:
+
+1. Clone the repository:
+```
+git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
+```
+
+2. Create a virtual environment and activate it (optional but recommended):
+```
+python -m venv venv
+source venv/bin/activate
+```
+
+3. Install the required dependencies:
+```
+pip install -r requirements.txt
+```
+4. Set up the database:
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+5. Create a superuser (admin) account:
+```
+python manage.py createsuperuser
+```
+6. Collect static files:
+```
+python manage.py collectstatic 
+```
+8. Run the  server:
+```
+uvicorn murtidjango.asgi:application
+```
+
+YourPhotoHost should now be accessible at `http://127.0.0.1:8000 `.
 
 
 ## Usage
