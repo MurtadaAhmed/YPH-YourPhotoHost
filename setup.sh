@@ -24,5 +24,11 @@ echo "from django.contrib.auth import get_user_model; User = get_user_model(); U
 # Collect static files
 $PYTHON manage.py collectstatic --noinput
 
+# Create a new script to run the server
+echo "sudo uvicorn murtidjango.asgi:application --host 0.0.0.0 --port 80" > run.sh
+
+# Add execute permissions to the new script
+chmod +x run.sh
+
 # Run the Uvicorn server
-sudo uvicorn murtidjango.asgi:application --host 0.0.0.0 --port 80
+./run.sh
