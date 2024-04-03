@@ -26,6 +26,7 @@ chmod +x setup.sh
 ```
 
 **Manual Installation:**
+
 A. To set up the YourPhotoHost application locally, follow these steps:
 
 1. Clone the repository:
