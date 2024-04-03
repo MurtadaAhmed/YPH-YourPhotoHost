@@ -166,7 +166,11 @@ source venv/bin/activate
 
 3. Install the required dependencies:
 ```
+sudo -s
+apt update
+apt install python3-pip
 pip install -r requirements.txt
+
 ```
 4. Set up the database:
 ```
@@ -185,7 +189,6 @@ python manage.py collectstatic
 ```
 uvicorn murtidjango.asgi:application
 ```
-
 YourPhotoHost should now be accessible at `http://127.0.0.1:8000 `.
 
 To make the app accessible from server ip, run:
