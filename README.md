@@ -190,10 +190,10 @@ YourPhotoHost should now be accessible at `http://127.0.0.1:8000 `.
 
 To make the app accessible from server ip, run:
 ```
-uvicorn murtidjango.asgi:application --host 0.0.0.0
+sudo uvicorn murtidjango.asgi:application --host 0.0.0.0 --port 80
 ```
-the app is now accessible on 'http://YOUR_SERVER_IP:8000'
-make sure the server allow port 8000
+the app is now accessible on 'http://YOUR_SERVER_IP'
+
 
 
 
