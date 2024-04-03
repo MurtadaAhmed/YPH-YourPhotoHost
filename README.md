@@ -24,6 +24,8 @@ cd YPH-YourPhotoHost
 chmod +x setup.sh
 ./setup.sh
 ```
+default username: admin
+default password: password
 
 **Manual Installation:**
 
