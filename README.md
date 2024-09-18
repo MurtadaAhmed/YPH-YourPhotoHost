@@ -16,6 +16,16 @@ YourPhotoHost (YPH) is a web application that allows users to upload, view, and 
 
   
 ## Installation
+
+**Deployment using docker-compose and nginx:**
+
+Run the following commnands after running Docker:
+```
+git clone https://github.com/MurtadaAhmed/YPH-YourPhotoHost.git
+cd YPH-YourPhotoHost
+docker-compose up --build
+```
+
 **Automatic deployment on linux server using setup.sh:**
 ```
 sudo -s
