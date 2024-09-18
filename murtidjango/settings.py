@@ -20,11 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-sg5+rz$^-betba=7&*0d_@kco=#%j0cj=tv32p7v7(an0b0lci'
+CSRF_TRUSTED_ORIGINS = ['https://murti.website']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.24', "murti.website"]
+ALLOWED_HOSTS = ['murti.website']
 
 # Application definition
 
