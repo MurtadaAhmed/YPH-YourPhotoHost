@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-sg5+rz$^-betba=7&*0d_@kco=#%j0cj=tv32p7v7(an0b0lci
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.24', "murti.website"]
 
 # Application definition
 
@@ -148,3 +148,26 @@ EMAIL_HOST_USER = 'email@domain.com'
 EMAIL_HOST_PASSWORD = 'email_password'
 
 DEFAULT_FROM_EMAIL = 'email@domain.com'
+
+
+import os
+import logging.config
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
