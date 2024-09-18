@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   app1:
-    image: your-photo-host
+    build:
+      context: .  # This specifies the directory containing the Dockerfile
+      dockerfile: Dockerfile  # Optional, specify if the Dockerfile is not named 'Dockerfile'
     container_name: django_app
     volumes:
       - static_volume:/app/static
