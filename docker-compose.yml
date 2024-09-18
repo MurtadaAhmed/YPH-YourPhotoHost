@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app1:
+    image: your-photo-host
+    container_name: django_app
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    environment:
+      - DJANGO_SETTINGS_MODULE=murtidjango.settings
+    entrypoint: ["/bin/bash", "/app/entrypoint.sh"] # Ensure this script is executable and placed in your image
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_server
+    volumes:
+      - static_volume:/usr/share/nginx/html/static
+      - media_volume:/usr/share/nginx/html/media
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # Updated volume mount
+    ports:
+      - "80:80"
+    depends_on:
+      - app1
+
+volumes:
+  static_volume:
+    driver: local
+  media_volume:
+    driver: local
