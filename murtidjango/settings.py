@@ -24,9 +24,9 @@ SECRET_KEY = 'django-insecure-sg5+rz$^-betba=7&*0d_@kco=#%j0cj=tv32p7v7(an0b0lci
 CSRF_TRUSTED_ORIGINS = ['https://murti.website']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['murti.website']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
