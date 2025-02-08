@@ -1,4 +1,5 @@
 # YourPhotoHost (YPH)
+🚀 **Live Demo on Render:** <a href="https://yph-yourphotohost.onrender.com/" target="_blank">YPH - Your Photo Host</a>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.6-blue.svg)](https://www.python.org/downloads/)
@@ -16,6 +17,27 @@ YourPhotoHost (YPH) is a web application that allows users to upload, view, and 
 
   
 ## Installation
+**Deployment using docker (Preferred):**
+
+Build docker image:
+
+```commandline
+docker build -t yph .
+```
+
+Run the container:
+
+```commandline
+docker run -p 80:80 yph
+```
+
+The website will be accessed on the server on port 80 (if local host http://localhost/)
+
+Default admin username and password:
+
+username: admin
+
+password: password
 
 **Deployment using docker-compose and nginx:**
 
